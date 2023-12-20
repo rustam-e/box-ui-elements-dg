@@ -23,6 +23,7 @@ import {
     SIDEBAR_VIEW_METADATA,
     SIDEBAR_VIEW_SKILLS,
     SIDEBAR_VIEW_VERSIONS,
+    SIDEBAR_DOCGEN,
 } from '../../constants';
 import type { DetailsSidebarProps } from './DetailsSidebar';
 import type { ActivitySidebarProps } from './ActivitySidebar';
@@ -36,6 +37,7 @@ type Props = {
     currentUser?: User,
     currentUserError?: Errors,
     detailsSidebarProps: DetailsSidebarProps,
+    docgen: any,
     elementId: string,
     file: BoxItem,
     fileId: string,
@@ -69,6 +71,7 @@ const MARK_NAME_JS_LOADING_DETAILS = `${ORIGIN_DETAILS_SIDEBAR}${BASE_EVENT_NAME
 const MARK_NAME_JS_LOADING_ACTIVITY = `${ORIGIN_ACTIVITY_SIDEBAR}${BASE_EVENT_NAME}`;
 const MARK_NAME_JS_LOADING_SKILLS = `${ORIGIN_SKILLS_SIDEBAR}${BASE_EVENT_NAME}`;
 const MARK_NAME_JS_LOADING_METADATA = `${ORIGIN_METADATA_SIDEBAR}${BASE_EVENT_NAME}`;
+const MARK_NAME_JS_LOADING_DOCGEN = `docgen_sidebar${BASE_EVENT_NAME}`;
 const MARK_NAME_JS_LOADING_VERSIONS = `${ORIGIN_VERSIONS_SIDEBAR}${BASE_EVENT_NAME}`;
 
 const URL_TO_FEED_ITEM_TYPE = { annotations: 'annotation', comments: 'comment', tasks: 'task' };
@@ -83,6 +86,7 @@ const LoadableMetadataSidebar = SidebarUtils.getAsyncSidebarContent(
     SIDEBAR_VIEW_METADATA,
     MARK_NAME_JS_LOADING_METADATA,
 );
+const LoadableDocgenSidebar = SidebarUtils.getAsyncSidebarContent(SIDEBAR_DOCGEN, MARK_NAME_JS_LOADING_DOCGEN);
 const LoadableVersionsSidebar = SidebarUtils.getAsyncSidebarContent(
     SIDEBAR_VIEW_VERSIONS,
     MARK_NAME_JS_LOADING_VERSIONS,
@@ -153,6 +157,7 @@ class SidebarPanels extends React.Component<Props, State> {
             currentUser,
             currentUserError,
             detailsSidebarProps,
+            docgen,
             elementId,
             file,
             fileId,
@@ -266,6 +271,18 @@ class SidebarPanels extends React.Component<Props, State> {
                         )}
                     />
                 )}
+                {/* <Route exact path={`/${SIDEBAR_DOCGEN}`} render={() => <>hello world</>} /> */}
+                <Route
+                    exact
+                    path={`/${SIDEBAR_DOCGEN}`}
+                    render={() => (
+                        <LoadableDocgenSidebar
+                            hasSidebarInitialized={isInitialized}
+                            startMarkName={MARK_NAME_JS_LOADING_DOCGEN}
+                            {...docgen}
+                        />
+                    )}
+                />
                 {hasVersions && (
                     <Route
                         path={SIDEBAR_PATH_VERSIONS}
@@ -295,6 +312,8 @@ class SidebarPanels extends React.Component<Props, State> {
                             redirect = SIDEBAR_VIEW_DETAILS;
                         } else if (hasMetadata) {
                             redirect = SIDEBAR_VIEW_METADATA;
+                        } else {
+                            redirect = SIDEBAR_DOCGEN;
                         }
 
                         return <Redirect to={{ pathname: `/${redirect}`, state: { silent: true } }} />;

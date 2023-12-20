@@ -5,28 +5,28 @@
  */
 
 import * as React from 'react';
-import { injectIntl } from 'react-intl';
 import type { InjectIntlProvidedProps } from 'react-intl';
-import AdditionalTabs from './additional-tabs';
+import { injectIntl } from 'react-intl';
+import {
+    SIDEBAR_DOCGEN,
+    SIDEBAR_VIEW_ACTIVITY,
+    SIDEBAR_VIEW_DETAILS,
+    SIDEBAR_VIEW_METADATA,
+    SIDEBAR_VIEW_SKILLS,
+} from '../../constants';
+import BoxSign28 from '../../icon/logo/BoxSign28';
 import IconChatRound from '../../icons/general/IconChatRound';
 import IconDocInfo from '../../icons/general/IconDocInfo';
 import IconMagicWand from '../../icons/general/IconMagicWand';
 import IconMetadataThick from '../../icons/general/IconMetadataThick';
+import { SIDEBAR_NAV_TARGETS } from '../common/interactionTargets';
+import messages from '../common/messages';
+import './SidebarNav.scss';
 import SidebarNavButton from './SidebarNavButton';
-import SidebarNavSign from './SidebarNavSign';
 import SidebarNavTablist from './SidebarNavTablist';
 import SidebarToggle from './SidebarToggle';
-import messages from '../common/messages';
-import { SIDEBAR_NAV_TARGETS } from '../common/interactionTargets';
-import {
-    SIDEBAR_VIEW_SKILLS,
-    SIDEBAR_VIEW_ACTIVITY,
-    SIDEBAR_VIEW_DETAILS,
-    SIDEBAR_VIEW_METADATA,
-} from '../../constants';
-import { useFeatureConfig } from '../common/feature-checking';
-import type { NavigateOptions, AdditionalSidebarTab } from './flowTypes';
-import './SidebarNav.scss';
+import AdditionalTabs from './additional-tabs';
+import type { AdditionalSidebarTab } from './flowTypes';
 
 type Props = {
     additionalTabs?: Array<AdditionalSidebarTab>,
@@ -54,8 +54,6 @@ const SidebarNav = ({
     isOpen,
     onNavigate,
 }: Props) => {
-    const { enabled: hasBoxSign } = useFeatureConfig('boxSign');
-
     return (
         <div className="bcs-SidebarNav" aria-label={intl.formatMessage(messages.sidebarNavLabel)}>
             <div className="bcs-SidebarNav-tabs">
@@ -100,13 +98,14 @@ const SidebarNav = ({
                             <IconMetadataThick />
                         </SidebarNavButton>
                     )}
+                    <SidebarNavButton
+                        data-resin-target={SIDEBAR_NAV_TARGETS.DOCGEN}
+                        sidebarView={SIDEBAR_DOCGEN}
+                        tooltip="Box Docgen"
+                    >
+                        <BoxSign28 className="bcs-SidebarNavSignButton-icon" />
+                    </SidebarNavButton>
                 </SidebarNavTablist>
-
-                {hasBoxSign && (
-                    <div className="bcs-SidebarNav-secondary">
-                        <SidebarNavSign />
-                    </div>
-                )}
 
                 {hasAdditionalTabs && (
                     <div className="bcs-SidebarNav-overflow">

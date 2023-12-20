@@ -215,6 +215,7 @@ class Sidebar extends React.Component<Props, State> {
             currentUser,
             currentUserError,
             detailsSidebarProps,
+            features,
             file,
             fileId,
             getPreview,
@@ -239,6 +240,7 @@ class Sidebar extends React.Component<Props, State> {
         const styleClassName = classNames('be bcs', className, {
             'bcs-is-open': isOpen,
         });
+        const { docgen } = features;
 
         return (
             <aside id={this.id} className={styleClassName} data-testid="preview-sidebar">
@@ -267,6 +269,7 @@ class Sidebar extends React.Component<Props, State> {
                             currentUserError={currentUserError}
                             elementId={this.id}
                             detailsSidebarProps={detailsSidebarProps}
+                            docgen={docgen}
                             file={file}
                             fileId={fileId}
                             getPreview={getPreview}
